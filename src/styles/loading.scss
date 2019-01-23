@@ -1,0 +1,82 @@
+// Set params
+$countBlocks: 4;
+$speeadAnimatin: 15;
+$duringAnimation: 2;
+$transition: 6;
+$colorOne: grey;
+$colorTwo: #fff;
+$borderColor: #b3b3b3dd;
+$borderWeight: 5px;
+$wrap: #607d8bc4;
+// End set params
+$sumTimingStart: $duringAnimation / $speeadAnimatin;
+$startAnimation: 0;
+$percentExicute: $speeadAnimatin / ($duringAnimation * $speeadAnimatin) * 100;
+$biforeStartExecute: $percentExicute - $transition;
+
+@function getTimeStart($k) {
+    @return $duringAnimation / $speeadAnimatin * $k + s;
+}
+
+@function getDuringAnimation() {
+    @return $duringAnimation + s;
+}
+
+@mixin start {
+  background: $colorOne;
+}
+
+@mixin end {
+  background: $colorTwo;
+}
+
+@keyframes effects { 
+  #{$startAnimation}% { 
+    @include start;
+  }
+  #{$biforeStartExecute}% { 
+    @include end;
+  }
+  #{$percentExicute}% { 
+     @include start;
+  }
+}
+
+@for $i from 1 through $countBlocks {
+  .menu-list li:nth-child(#{$i}) { 
+    animation: effects getDuringAnimation() getTimeStart($i - 1) infinite; 
+  }
+}
+
+.menu-list {
+  display:flex;
+  width:300px;
+  justify-content:space-around;
+  margin: auto;
+  padding: 0;
+}
+
+.menu-list li {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background: $colorOne;
+  list-style-type: none;
+  box-sizing:border-box;
+  border: $borderWeight solid $borderColor;
+}
+
+.loading-block {
+  position: absolute;
+  top: 43%;
+  width: 100%;
+}
+
+.loading-wrap {
+  background: $wrap;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

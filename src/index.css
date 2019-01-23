@@ -1,0 +1,9 @@
+body {
+    background: #dae2f3;
+    max-width: 1000px;
+    margin: auto;
+    position: relative;
+    height: 400px;
+    box-shadow: 0 0 5px 2px #00000052;
+    margin-top: 15px;
+}

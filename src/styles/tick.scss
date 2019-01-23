@@ -1,0 +1,382 @@
+$radius: 5px;
+$padding: 15px;
+
+%buttonStyle {
+  background: green;
+  color: #fff;
+  width: 100%;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition: 0.5s;
+  text-transform: uppercase;
+
+  &:hover {
+    background: rgb(31, 156, 31);
+  }
+}
+
+%btnBottom {
+  height: 40px;
+  border-radius: $radius;
+}
+
+%dateTime {
+  padding: 5px 10px;
+  font-size: 18px;
+  height: 30px;
+  border-radius: $radius;
+}
+
+%title {
+  margin: 0;
+  text-transform: uppercase;
+  color: cornsilk;
+  text-shadow: 0px 0px 3px black;
+}
+
+%bodyContentBlock {
+  background: #dedede;
+  padding: $padding;
+  border-radius: 4px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.56);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 205px;
+}
+
+%spaceBetween {
+  justify-content: space-between;
+}
+
+%tickHeader {
+  display: flex;
+  align-items: center;
+  height: 45px;
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.56);
+  background: #dedede;
+}
+
+%showBlockAnimation {
+  animation-duration: 0.5s;
+  animation-name: showBlock;
+  opacity: 1;
+  height: auto;
+  overflow: visible;
+}
+
+%hideBlockAnimation {
+  animation-duration: 0.5s;
+  animation-name: hideBlock;
+}
+
+.tick-label {
+  background:#ddd;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.tick-label, .tick-option {
+  padding: 10px 15px;
+  display: block;
+}
+
+.tick-option {
+  cursor: pointer;
+  &:hover, &.t-active{
+    background: rgba(99, 198, 228, 0.514);
+  }
+}
+
+@keyframes showBlock {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hideBlock {
+  from {
+    opacity: 1;
+    overflow: visible;
+    height: auto;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.tick-container {
+  div, input {
+    box-sizing: border-box;
+  }
+}
+
+.tick-container {
+  position: absolute;
+  right: 15px;
+  top: 0;
+  z-index: 100;
+  font-family: arial;
+  .Select-clear-zone {
+    display: none;
+  }
+  .tick-header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    i {
+      display: block;
+      cursor: pointer;
+
+      img {
+        max-width: 45px;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .tick-body {
+    box-shadow: 0px 0px 10px #000000a1;
+    position: relative;
+    background: #fff;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    border-radius: $radius;
+
+    .hide-tick-popup {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      background-position: center;
+      display: block;
+    }
+
+    &.show {
+      @extend %showBlockAnimation;
+    }
+
+    &.hide {
+      @extend %hideBlockAnimation;
+    }
+
+    @media (max-width: 540px) {
+      width: 100%;
+    }
+    @media (min-width: 540px) {
+      width: 500px;
+    }
+  }
+
+
+  .tick-task-status {
+    padding: $padding;
+
+    .task-header {
+      @extend %spaceBetween, %tickHeader;
+
+      h3 {
+        @extend %title;
+      }
+
+      button {
+        @extend %buttonStyle;
+        max-width: 175px;
+        margin: 0;
+        font-size: 16px;
+        padding: 5px 0;
+        border-radius: $radius;
+      }
+    }
+
+    .task-body {
+      @extend %bodyContentBlock;
+
+      .task-status-wrap {
+        display: flex;
+        width: 100%;
+        background: #fff;
+        border-radius: $radius;
+        padding: $padding;
+        div {
+          width: 20%;
+          text-align: center;
+          border-right: 1px solid;
+          font-size: 16px;
+
+          span {
+            width: 100%;
+            display: block;
+            border-bottom: 1px solid;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+          }
+
+          &:last-child {
+            border: none;
+          }
+        }
+      }
+    }
+
+  }
+
+  .tick-auth {
+    padding: $padding;
+
+    .auth-header {
+      @extend %spaceBetween, %tickHeader;
+      h3 {
+        @extend %title;
+      }
+    }
+
+    .tick-auth-form {
+      @extend %bodyContentBlock;
+
+      input {
+        width: 100%;
+        margin-top: 10px;
+        height: 30px;
+        font-size: 22px;
+        padding: 0 5px;
+      }
+
+      label {
+        margin-bottom: 15px;
+        display: block;
+        font-size: 18px;
+        width: 100%;
+      }
+
+      button {
+        @extend %buttonStyle, %btnBottom;
+      }
+    }
+  }
+
+  .tick-tracker {
+    padding: $padding;
+
+    .tick-tracker-header {
+      @extend %spaceBetween, %tickHeader;
+
+      h3 {
+        @extend %title;
+      }
+
+      button {
+        @extend %buttonStyle;
+        max-width: 100px;
+        margin: 0;
+        font-size: 16px;
+        padding: 5px 0;
+        border-radius: $radius;
+      }
+    }
+
+    .tick-tracker-body {
+      @extend %bodyContentBlock, %spaceBetween;
+
+      .select-tacks {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .select-tasks, .select-project {
+        width: 100%;
+        margin-bottom: 15px;
+      }
+
+      .tick-time {
+        @extend %dateTime;
+        width: 70px;
+      }
+
+      .task-date {
+        width: 120px;
+        position: relative;
+
+        input {
+          @extend %dateTime;
+          width: 100%;
+        }
+
+        .t-calendar {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          box-shadow: 0 0 8px rgba(0, 0, 0, 0.62);
+          border-radius: $radius;
+          overflow: hidden;
+          height: 0;
+          opacity: 0;
+
+          .rdr-Calendar {
+            &:last-child:before {
+              display: none;
+            }
+          }
+
+          &.show {
+            @extend %showBlockAnimation;
+          }
+
+          &.hide {
+            @extend %hideBlockAnimation;
+          }
+
+          @media (max-width: 520px) {
+            left: -135%;
+          }
+        }
+      }
+
+      textarea {
+        width: 180px;
+        padding: 5px 15px;
+        @media (max-width: 520px) {
+          width: 100%;
+          margin-top: 15px;
+        }
+        border-radius: $radius;
+      }
+
+      button {
+        @extend %buttonStyle, %btnBottom;
+        margin-top: 15px;
+      }
+    }
+  }
+
+  .tick-messages {
+    border: 5px solid yellow;
+    padding: 5px 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.56);
+    border-radius: $radius;
+
+    p {
+      margin: 5px 0;
+    }
+  }
+
+  @media (max-width: 540px) {
+    right: 15px;
+    left: 15px;
+  }
+}
