@@ -7,7 +7,7 @@ import moment from 'moment';
 import {
   API_PREFIX,
   HEADER_CONSTANTS,
-} from '../constants/General';
+} from '../Tick/constants/Tick';
 
 const feathersClient = feathers();
 

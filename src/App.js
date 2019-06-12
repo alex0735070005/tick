@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import Tick from './components/UIComponents/Tick';
-import './styles/loading.scss';
-import './styles/tick.scss';
+import Tick from './Tick';
 
 class App extends Component {
 
