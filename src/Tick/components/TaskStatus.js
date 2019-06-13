@@ -28,6 +28,8 @@ const TaskStatus = (props) => {
     tickReturnTracker,
   } = props;
 
+  const totalHours = task.total_hours / task.budget * 100;
+
   return (
     <div className={classNames('tick-task-status')}>
       <div className={classNames('task-header')}>
@@ -48,28 +50,28 @@ const TaskStatus = (props) => {
           <div>
             <span>{TICK_TRACK_TEXT}</span>
             <Rounding
-              numberValue={task.timeValue}
+              numberValue={`${task.timeValue}`}
               symbol={TICK_HOURS_SYMBOL}
             />
           </div>
           <div>
             <span>{TICK_TOTAL_TEXT}</span>
             <Rounding
-              numberValue={task.total_hours}
+              numberValue={`${task.total_hours}`}
               symbol={TICK_HOURS_SYMBOL}
             />
           </div>
           <div>
             <span>{TICK_BUDGET_TEXT}</span>
             <Rounding
-              numberValue={task.budget}
+              numberValue={`${task.budget}`}
               symbol={TICK_HOURS_SYMBOL}
             />
           </div>
           <div>
             <span>{TICK_DONE_TEXT}</span>
             <Rounding
-              numberValue={task.total_hours / task.budget * 100}
+              numberValue={`${totalHours}`}
               symbol={TICK_PERCENT_SYMBOL}
             />
           </div>
