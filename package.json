@@ -10,7 +10,6 @@
     "feathers-hooks": "^2.1.2",
     "feathers-rest": "^1.8.1",
     "feathers-rest-client": "^1.1.0",
-    "immutable": "^4.0.0-rc.12",
     "localStorage": "^1.0.4",
     "lodash": "^4.17.11",
     "moment": "^2.23.0",

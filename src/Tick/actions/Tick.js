@@ -23,33 +23,37 @@ import {
   TICK_SET_IS_FETCHING,
 } from '../constants/Tick';
 
+export const setMessagesAction = messages => ({type: TICK_SET_MESSAGES, messages});
+export const setIsFetchingAction = isFetching => ({type: TICK_SET_IS_FETCHING, isFetching});
+export const setProjectsAction = projects => ({type: TICK_SET_PROJECTS, projects});
+export const setProjectAction = selectedProject => ({type: TICK_SET_PROJECT, selectedProject});
+export const setIsAuthAction = isAuth => ({type: TICK_SET_IS_AUTH, isAuth});
+export const setClearAction = () => ({type: TICK_CLEAR});
+export const setTasksAction = tasks => ({type: TICK_SET_TASKS, tasks});
+export const setTaskAction = task => ({type: TICK_SET_TASK, task});
+export const setSelectedTaskAction = selectedTask => ({type: TICK_SET_SELECTED_TASK, selectedTask});
+export const setTimeAction = timeValue => ({type: TICK_SET_TIME, timeValue});
+export const setDateAction = dateValue => ({type: TICK_SET_DATE, dateValue});
+export const setMessageAction = messageValue => ({type: TICK_SET_MESSAGE, messageValue});
+
 /**
  * Set track message for task
  * @param {array} messages
  * @returns {Function}
  */
-export const displayMessages = (messages) => (dispatch) => {
-  dispatch({
-    type: TICK_SET_MESSAGES,
-    messages,
-  });
+export const displayMessages = messages => dispatch => {
+  dispatch(setMessagesAction(messages));
 
   setTimeout(() => {
-    dispatch({
-      type: TICK_SET_MESSAGES,
-      messages: [],
-    });
+    dispatch(setMessagesAction([]));
   }, DELAY_HIDE_MESSAGES);
 };
 
 const setIsFetching = (isFetching, dispatch) => {
-  dispatch({
-    type: TICK_SET_IS_FETCHING,
-    isFetching,
-  });
+  dispatch(setIsFetchingAction(isFetching));
 }
 
-const setClients = (data) => {
+const setClients = data => {
   const tickClients = {};
   data.forEach(client => {
     tickClients[client.id] = client;
@@ -58,7 +62,7 @@ const setClients = (data) => {
   return tickClients;
 } 
 
-const setProjects = (projects, dispatch)=> {
+export const setProjects = (projects, dispatch)=> {
   const clients = JSON.parse(localStorage.getItem('tickClients'));
   const projectOptions = projects.reduce((data, project) => {
 
@@ -83,10 +87,7 @@ const setProjects = (projects, dispatch)=> {
   /**
    * Set projects for redux state
    */
-  dispatch({
-    type: TICK_SET_PROJECTS,
-    projects:projectOptions,
-  });
+  dispatch(setProjectsAction(projectOptions));
 }
 
 /**
@@ -95,7 +96,7 @@ const setProjects = (projects, dispatch)=> {
  * @param password
  * @returns {Function}
  */
-export const tickAuth = (username, password) => (dispatch) => {
+export const tickAuth = (username, password) => dispatch => {
   setIsFetching(true, dispatch);
   TickService.auth(username, password).then((data) => {
     if(!Array.isArray(data)) {
@@ -109,13 +110,10 @@ export const tickAuth = (username, password) => (dispatch) => {
       ...dataAuth,
       username,
     }));
-    /**
+    /**tickAuth
      * Set is auth params for check isLogged user
      */
-    dispatch({
-      type: TICK_SET_IS_AUTH,
-      isAuth: true,
-    });
+    dispatch(setIsAuthAction(true));
   })
   .then(() => {
 
@@ -164,10 +162,7 @@ export const tickAuth = (username, password) => (dispatch) => {
 export const tickIsAuth = () => (dispatch) => {
   const isAuth = !!localStorage.getItem('tickAuth');
 
-  dispatch({
-    type: TICK_SET_IS_AUTH,
-    isAuth,
-  });
+  dispatch(setIsAuthAction(isAuth));
 
   if (isAuth) {
     TickService.getProjects()
@@ -188,21 +183,10 @@ export const tickLogout = () => (dispatch) => {
   if(isTickAuth || isTickUser) {
     localStorage.removeItem('tickAuth');
     localStorage.removeItem('tickUser');
-    dispatch({
-      type: TICK_SET_IS_AUTH,
-      isAuth: false,
-    });
-    dispatch({
-      type: TICK_CLEAR,
-    });
-    dispatch({
-      type: TICK_SET_PROJECTS,
-      projects:[]
-    });
-    dispatch({
-      type: TICK_SET_TASKS,
-      tasks:[]
-    });
+    dispatch(setIsAuthAction(false));
+    dispatch(setClearAction());
+    dispatch(setProjectsAction([]));
+    dispatch(setTasksAction([]));
   }
 };
 
@@ -211,17 +195,11 @@ export const tickLogout = () => (dispatch) => {
  * @param {object} selectedProject
  * @returns {Function}
  */
-export const changeProject = (selectedProject) => (dispatch) => {
+export const changeProject = selectedProject => dispatch => {
   setIsFetching(true, dispatch);
-  TickService.getTasks(selectedProject.value).then((tasks) => {
-    dispatch({
-      type: TICK_SET_PROJECT,
-      selectedProject,
-    });
-    dispatch({
-      type: TICK_SET_TASKS,
-      tasks,
-    });
+  TickService.getTasks(selectedProject.value).then(tasks => {
+    dispatch(setProjectAction(selectedProject));
+    dispatch(setTasksAction(tasks));
     setIsFetching(false, dispatch);
   }).catch((error) => {
     if (error.response.status === TICK_UNAUTHORIZED_STATUS) {
@@ -238,11 +216,8 @@ export const changeProject = (selectedProject) => (dispatch) => {
  * @param {object} selectedTask
  * @returns {Function}
  */
-export const changeTask = (selectedTask) => (dispatch) => {
-  dispatch({
-    type: TICK_SET_SELECTED_TASK,
-    selectedTask,
-  });
+export const changeTask = selectedTask => dispatch => {
+  dispatch(setSelectedTaskAction(selectedTask));
 
 };
 
@@ -252,10 +227,7 @@ export const changeTask = (selectedTask) => (dispatch) => {
  * @returns {Function}
  */
 export const changeTickTime = (value) => (dispatch) => {
-  dispatch({
-    type: TICK_SET_TIME,
-    timeValue: value,
-  });
+  dispatch(setTimeAction(value));
 };
 
 /**
@@ -263,13 +235,10 @@ export const changeTickTime = (value) => (dispatch) => {
  * @param {object} date
  * @returns {Function}
  */
-export const changeTickDate = (date) => (dispatch) => {
+export const changeTickDate = date => dispatch => {
   // if user not input full date set date empty string
   const dateValue = date ? date.format('Y-M-D') : '';
-  dispatch({
-    type: TICK_SET_DATE,
-    dateValue,
-  });
+  dispatch(setDateAction(dateValue));
 };
 
 /**
@@ -277,9 +246,7 @@ export const changeTickDate = (date) => (dispatch) => {
  * @returns {Function}
  */
 export const tickReturnTracker = () => (dispatch) => {
-  dispatch({
-    type: TICK_CLEAR,
-  });
+  dispatch(setClearAction());
 };
 
 /**
@@ -287,11 +254,8 @@ export const tickReturnTracker = () => (dispatch) => {
  * @param {string} messageValue
  * @returns {Function}
  */
-export const changeTickMessage = (messageValue) => (dispatch) => {
-  dispatch({
-    type: TICK_SET_MESSAGE,
-    messageValue,
-  });
+export const changeTickMessage = messageValue =>(dispatch) => {
+  dispatch(setMessageAction(messageValue));
 };
 
 /**
@@ -328,18 +292,17 @@ export const createEntry = (entry) => (dispatch) => {
         name,
         total_hours,
       } = task;
-      dispatch({
-        type: TICK_SET_TASK,
-        task: {
-          id,
-          project_id,
-          budget,
-          name,
-          total_hours,
-          timeValue: entry.timeValue,
-          project_name: project.name,
-        },
-      });
+
+      dispatch(setTaskAction({
+        id,
+        project_id,
+        budget,
+        name,
+        total_hours,
+        timeValue: entry.timeValue,
+        project_name: project.name,
+      }));
+
       setIsFetching(false, dispatch);
     }).catch((error) => {
       let errorMessages = [];
